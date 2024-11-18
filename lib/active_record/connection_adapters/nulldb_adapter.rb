@@ -22,11 +22,12 @@ require 'active_record/connection_adapters/nulldb_adapter/null_object'
 require 'active_record/connection_adapters/nulldb_adapter/table_definition'
 
 require 'active_record/tasks/nulldb_database_tasks' if defined?(ActiveRecord::Tasks)
-register 'nulldb', 'ActiveRecord::ConnectionAdapters::NullDBAdapter', 'active_record/connection_adapters/nulldb_adapter'
 
 module ActiveRecord
   module ConnectionHandling
     def nulldb_connection(config)
+      register 'nulldb', 'ActiveRecord::ConnectionAdapters::NullDBAdapter', 'active_record/connection_adapters/nulldb_adapter'
+
       ConnectionAdapters::NullDBAdapter.new(config)
     end
   end
