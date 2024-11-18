@@ -24,9 +24,22 @@ require 'active_record/connection_adapters/nulldb_adapter/table_definition'
 require 'active_record/tasks/nulldb_database_tasks' if defined?(ActiveRecord::Tasks)
 
 module ActiveRecord
+  module ConnectionHandling
+    def nulldb_connection(config)
+      ConnectionAdapters::NullDBAdapter.new(config)
+    end
+  end
+
   module ConnectionAdapters
     if ActiveRecord::VERSION::STRING >= '7.2'
       register 'nulldb', 'ActiveRecord::ConnectionAdapters::NullDBAdapter', 'active_record/connection_adapters/nulldb_adapter'
+    end
+
+    class NullDBAdapter < AbstractAdapter
+      def initialize(config)
+        super(nil, logger)
+        @config = config
+      end
     end
   end
 end
